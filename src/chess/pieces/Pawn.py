@@ -9,12 +9,12 @@ class Pawn(Piece):
         self.get_moves()
         (self.passant_armed,
          self.passant_vuln,
-         self.passant_rank) = self.init_en_passant()
+         self.passant_attack_rank,
+         self.passant_vuln_rank) = self.init_en_passant()
         
     def _move_function(self) -> None:
-        self.passant_armed = self.position.rank == self.passant_rank
-        if not self.developed:
-            self.passant_vuln = True
+        self.passant_armed = self.position.rank == self.passant_attack_rank
+        self.passant_vuln = not self.developed and self.position.rank == self.passant_vuln_rank
         
     def advance_position(self) -> list[list[Space]]:
         position: list[list[Space]] = []
@@ -59,14 +59,19 @@ class Pawn(Piece):
     
     def init_en_passant(self):
         rank = self.position.rank
+        attack_rank = rank
+        vuln_rank = rank
         if self.color == 'black':
-            rank = self.position.decrease_rank(distance=3)
+            attack_rank = self.position.decrease_rank(distance=3)
+            vuln_rank = self.position.decrease_rank(distance=2)
         elif self.color == 'white':
-            rank = self.position.increase_rank(distance=3)
+            attack_rank = self.position.increase_rank(distance=3)
+            vuln_rank = self.position.increase_rank(distance=2)
         return (
             False,
             False,
-            rank
+            attack_rank,
+            vuln_rank
         )
     
     def get_moves(self) -> None:
