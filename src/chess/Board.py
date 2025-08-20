@@ -185,7 +185,8 @@ class Board:
                 for spaces in piece.moves:
                     for space in spaces:
                         move = f"{piece.symbol}{space.file}{space.rank}"
-                        moves[piece].append(move)
+                        if move not in moves[piece]:
+                            moves[piece].append(move)
         return moves
     
     def detect_checkmate(self, color: str) -> bool:
