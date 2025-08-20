@@ -56,3 +56,4 @@ class Piece:
         self.position = space
         self._move_function()
         self.developed |= True
+        self.get_moves()

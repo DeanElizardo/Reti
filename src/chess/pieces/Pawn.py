@@ -60,9 +60,9 @@ class Pawn(Piece):
     def init_en_passant(self):
         rank = self.position.rank
         if self.color == 'black':
-            rank = self.position.decrease_rank(distance=2)
+            rank = self.position.decrease_rank(distance=3)
         elif self.color == 'white':
-            rank = self.position.increase_rank(distance=2)
+            rank = self.position.increase_rank(distance=3)
         return (
             False,
             False,
