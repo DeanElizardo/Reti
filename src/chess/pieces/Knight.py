@@ -4,7 +4,7 @@ from src.chess.Space import Space
 
 class Knight(Piece):
     def __init__(self, color: str, space: Space):
-        super().__init__(color, KNIGHT.NAME, KNIGHT.SYMB, space, self._move_function)
+        super().__init__(color, KNIGHT, space, self._move_function)
         self.get_moves()
 
     def _move_function(self) -> None:

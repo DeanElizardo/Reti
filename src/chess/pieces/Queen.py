@@ -6,7 +6,7 @@ from src.chess.pieces.Bishop import Bishop
 
 class Queen(Piece):
     def __init__(self, color: str, space: Space):
-        super().__init__(color, QUEEN.NAME, QUEEN.SYMB, space, self._move_function)
+        super().__init__(color, QUEEN, space, self._move_function)
         self.get_moves()
 
     def _move_function(self) -> None:

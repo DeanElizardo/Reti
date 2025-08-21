@@ -1,18 +1,19 @@
 from __future__ import annotations
 from typing import Callable
 from src.chess.Space import Space
+from src.chess.Kernel import PieceDescriptor
 
 class Piece:
     def __init__(
             self, 
             color: str, 
-            name: str, 
-            symbol:str, 
+            piece_descriptor: PieceDescriptor,
             space: Space,
             move_function: Callable[[], None]):
         self.color: str = color
-        self.name: str = name
-        self.symbol: str = symbol
+        self.name: str = piece_descriptor.NAME
+        self.symbol: str = piece_descriptor.SYMB
+        self.points = piece_descriptor.POINTS
         self.position: Space = space
         self.developed: bool = False
         self.moves: list[list[Space]] = []

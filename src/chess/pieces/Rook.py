@@ -4,7 +4,7 @@ from src.chess.Space import Space
 
 class Rook(Piece):
     def __init__(self, color: str, space: Space):
-        super().__init__(color, ROOK.NAME, ROOK.SYMB, space, self._move_function)
+        super().__init__(color, ROOK, space, self._move_function)
         self.get_moves()
 
     def _move_function(self) -> None:

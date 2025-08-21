@@ -5,7 +5,7 @@ from src.chess.Space import Space
 
 class Pawn(Piece):
     def __init__(self, color: str, space: Space):
-        super().__init__(color, PAWN.NAME, PAWN.SYMB, space, self._move_function)
+        super().__init__(color, PAWN, space, self._move_function)
         self.get_moves()
         (self.passant_armed,
          self.passant_vuln,

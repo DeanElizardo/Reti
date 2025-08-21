@@ -5,7 +5,7 @@ from src.chess.Space import Space
 
 class King(Piece):
     def __init__(self, color: str, space: Space):
-        super().__init__(color, KING.NAME, KING.SYMB, space, self._move_function)
+        super().__init__(color, KING, space, self._move_function)
         self.in_check = False
         self.developed = False
         self.get_moves()
