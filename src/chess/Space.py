@@ -3,7 +3,9 @@ from src.chess.Kernel import *
 from typing import Union
 
 class Space:
-    def __init__(self, file: str, rank: int):
+    def __init__(self, file: Union[str, None], rank: Union[int, None]):
+        if file is None or rank is None:
+            raise Exception("File and Rank must not be None")
         self.file: str = file
         self.rank: int = rank
 

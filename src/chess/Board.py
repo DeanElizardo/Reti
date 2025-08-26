@@ -5,10 +5,10 @@ from src.chess.Space import Space
 from src.chess.Materiel import Materiel
 from src.chess.pieces.Piece import Piece
 from src.chess.pieces.Pawn import Pawn
-# from src.chess.pieces.Rook import Rook
-# from src.chess.pieces.Knight import Knight
-# from src.chess.pieces.Bishop import Bishop
-# from src.chess.pieces.Queen import Queen
+from src.chess.pieces.Rook import Rook
+from src.chess.pieces.Knight import Knight
+from src.chess.pieces.Bishop import Bishop
+from src.chess.pieces.Queen import Queen
 from src.chess.pieces.King import King
 
 class Board:
@@ -25,10 +25,11 @@ class Board:
                 space = Space(file, rank)
                 self.spaces[space] = None
         self.captures: Dict[str, list[Piece]] = {
-            'black': [],
-            'white': []
+            BLACK: [],
+            WHITE: []
         }
         self.setup_board()
+        self.material_advantage_to: str = "neither"
 
     def generate_pieces(self) -> Dict[str, Materiel]:
         return {
@@ -199,11 +200,51 @@ class Board:
                     checkmate &= len(moves) == 0
         return checkmate
     
+    def calculate_advantage(self) -> None:
+        white_total = 0
+        black_total = 0
+        for pieces in self.materiel[WHITE]:
+            for piece in pieces:
+                white_total += piece.points
+        for pieces in self.materiel[BLACK]:
+            for piece in pieces:
+                black_total += piece.points
+        if white_total > black_total:
+            self.material_advantage_to = WHITE
+        elif black_total > white_total:
+            self.material_advantage_to = BLACK
+        else:
+            self.material_advantage_to = "neither"
+            
+    def handle_capture(self, space: Space, attacking_color: str, captured_color: str) -> None:
+        captured_piece: Union[Piece, None] = self.spaces[space]
+        if captured_piece is None:
+            return
+        self.captures[attacking_color].append(captured_piece)
+        if isinstance(captured_piece, Queen):
+            self.materiel[attacking_color].queens.remove(captured_piece)
+        elif isinstance(captured_piece, Rook):
+            self.materiel[attacking_color].rooks.remove(captured_piece)
+        elif isinstance(captured_piece, Bishop):
+            self.materiel[attacking_color].bishops.remove(captured_piece)
+        elif isinstance(captured_piece, Knight):
+            self.materiel[attacking_color].knights.remove(captured_piece)
+        elif isinstance(captured_piece, Pawn):
+            self.materiel[attacking_color].pawns.remove(captured_piece)
+        else:
+            raise Exception("King capture is not allowed")
+    
     def apply_move(self, piece: Piece, space: Space) -> None:
         del self.attacks[piece.color][piece]
         old_space = piece.position.clone()
         self.spaces[old_space] = None
+        self.handle_capture(
+            space,
+            piece.color,
+            [c for c in [BLACK, WHITE] if c != piece.color][0]
+        )
         piece.move(space)
+        self.calculate_advantage()
         self.spaces[space] = piece
         self.attacks[piece.color][piece] = []
     

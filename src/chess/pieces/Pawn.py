@@ -41,20 +41,22 @@ class Pawn(Piece):
     
     def capture_positions(self) -> list[list[Space]]:
         positions: list[list[Space]] = []
-        advanced_positions: list[list[Space]] = self.advance_position()
-        if len(advanced_positions) > 0:
-            for attack_lane in advanced_positions:
-                for advanced_position in attack_lane:
-                    lesser_file: Union[str, None] = advanced_position.decrease_file()
-                    greater_file: Union[str, None] = advanced_position.increase_file()
-                    if lesser_file is not None:
-                        positions.append(
-                            [Space(lesser_file, advanced_position.rank)]
-                        )
-                    if greater_file is not None:
-                        positions.append(
-                            [Space(greater_file, advanced_position.rank)]
-                        )
+        lesser_file: Union[str, None] = self.position.decrease_file()
+        greater_file: Union[str, None] = self.position.increase_file()
+        advance_rank: Union[int, None] = None
+        if self.color == WHITE:
+            advance_rank = self.position.increase_rank()
+        else:
+            advance_rank = self.position.decrease_rank()
+        if advance_rank is not None:
+            if lesser_file is not None:
+                positions.append(
+                    [Space(lesser_file, advance_rank)]
+                )
+            if greater_file is not None:
+                positions.append(
+                    [Space(greater_file, advance_rank)]
+                )
         return positions
     
     def init_en_passant(self):
