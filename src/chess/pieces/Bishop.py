@@ -27,6 +27,7 @@ class Bishop(Piece):
         decrease_file = self.position.decrease_file()
         while advance_rank is not None and decrease_file is not None:
             new_space = Space(decrease_file, advance_rank)
+            positions.append(new_space)
             advance_rank = new_space.increase_rank()
             decrease_file = new_space.decrease_file()
         return positions
@@ -54,7 +55,7 @@ class Bishop(Piece):
         return positions
 
     def get_moves(self) -> None:
-        self.moves = []
+        self.moves.clear()
         self.moves.append(self.advance_rank_increase_file_diag())
         self.moves.append(self.advance_rank_decrease_file_diag())
         self.moves.append(self.decrease_rank_increase_file_diag())
