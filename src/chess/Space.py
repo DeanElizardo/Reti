@@ -20,6 +20,7 @@ class Space:
     
     def __str__(self) -> str:
         return f"{self.file}{self.rank}"
+    __repr__ = __str__
     
     def clone(self) -> Space:
         return Space(self.file, self.rank)
