@@ -22,7 +22,7 @@ class Game:
         while not any(player_choice in choices for choices in moves.values()):
             player_choice: str = input("MOVE: ")
         selected_piece: Piece = [p for p in moves if player_choice in moves[p]][0]
-        [file_coord, rank_coord] = list(player_choice[-2:])
+        [file_coord, rank_coord] = list(player_choice[len(player_choice) % 2:])
         space = Space(file_coord, int(rank_coord))
         return (selected_piece, space)
 
