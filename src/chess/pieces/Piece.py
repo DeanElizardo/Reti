@@ -35,6 +35,10 @@ class Piece:
     def __hash__(self) -> int:
         return hash((self.name, self.symbol, self.color, self.position))    
     
+    def __str__(self) -> str:
+        return f"{self.symbol}{self.position.file}{self.position.rank}"
+    __repr__ = __str__
+
     def pin(self):
         self.pinned = True
 
